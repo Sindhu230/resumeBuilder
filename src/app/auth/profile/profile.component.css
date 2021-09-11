@@ -1,0 +1,16 @@
+
+ body{
+    background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(https://i.postimg.cc/YjcJg24M/aa.jpg);
+        
+ }
+ button{
+     background-color: #7d8e3e;
+ }
+
+ button:hover{
+    background-color: #2ab2e6;
+}
+
+label{
+    color: white;
+}

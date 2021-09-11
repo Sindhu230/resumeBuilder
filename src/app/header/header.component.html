@@ -1,0 +1,67 @@
+
+<head>
+<style>
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+background:#00fecb;}
+
+li {
+  float: right;
+}
+
+li a {
+  display: block;
+  color: black;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-weight: 50px;
+  /* float: right; */
+}
+.logo {
+        float: left;
+    }
+    .logo img {
+        width: 50%;
+        padding: 15px 0;
+       
+    }
+
+.wrapper {
+        width: 1170px;
+        margin: auto;
+    }
+li a:hover {
+  background-color: white;
+}
+
+</style>
+</head>
+
+<div class="wrappper">
+  
+  <ul>
+    <li><a class="nav-link active" href="/">Home</a></li>
+  
+    <ng-container *ngIf="!auth.isAuthenticated()">
+     <li><a href="/auth/register">SignUp</a></li>
+    <li><a href="/auth/login">Login</a></li>
+    </ng-container>
+    
+  
+    <ng-container *ngIf="auth.isAuthenticated()">
+    <li><a href="/profile">Profile</a></li>
+    <!-- <li><a href="/edit-cv">Edit Resume</a></li> -->
+    <li><a href="/resume">View Resume</a></li>
+    <li><a href="/edit-resume">Edit- Resume</a></li>
+
+    <li><a (click)="logout()">Logout</a></li>
+  </ng-container>
+  </ul>
+  
+</div>
+
+

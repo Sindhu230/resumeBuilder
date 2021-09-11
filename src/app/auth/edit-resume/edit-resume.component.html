@@ -1,0 +1,142 @@
+
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <title>Create Resume</title>
+  </head>
+  <body>
+   
+    
+    <div class="container">
+        <h1 class="text-center my-2">Resume Generator</h1>
+        <p class="text-center">Please Fill The Details</p>   
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Personal Information</h3>
+                <form [formGroup]="editcv" (ngSubmit)='onSubmit()'>
+
+                    <div class="form-group" mt-2>
+                        <label for="name">Your Name</label>
+                        <input [class.is-invalid] = "name.invalid && name.touched" name="name" type="text" formControlName="name" class="form-control" />
+                     <div *ngIf = "name.invalid && editcv.touched">
+                        <small *ngIf = " name.errors?.required" class="text-danger">Name is required</small>
+                         <small *ngIf =" name.errors?.minlength" class="text-danger">Name must be at least 4 characters</small>
+                         <small *ngIf =" name.errors?.forbiddenName" class="text-danger"> {{name.errors?.forbiddenName.value}} as a name is not allowed</small>
+
+                        </div>
+                    
+                    </div>
+                     
+
+
+                      <div class="form-group" mt-2>
+                        <label for="contact">Your Contact</label>
+                        <input type="text" formControlName="contact" name="contact" class="form-control" />
+                      </div>
+                      {{editcv.value | json}}
+                      <div class="form-group" mt-2>
+                        <label for="address">Your address</label>
+                        <input type="text" formControlName="address" name="address" class="form-control"/>
+                      </div>
+
+                      <p class="text-secondary my-3">Important Links</p>
+                      <div class="form-group" mt-2>
+                          <label for="fb">Facebook</label>
+                          <input type="text"
+                          name="fb"
+                           class="form-control"
+                           formControlName="fb"
+                           />
+                      </div>
+                      <div class="form-group" mt-2>
+                          <label for="github">Github</label>
+                          <input type="text"
+                           class="form-control"
+                           name="github"
+                           formControlName ="github"
+                            placeholder="enter here" />
+                      </div>
+                      <div class="form-group" mt-2>
+                          <label for="linkedIn">LinkedIn</label>
+                          <input type="text"
+                           class="form-control"
+                           name="linkedIn"
+                           formControlName="linkedIn"
+                            placeholder="enter here" />
+                      </div>
+                </form>
+            </div>
+
+
+            <div class="col-md-6">
+                <h3>Professional Information</h3>
+
+                <form [formGroup]="editcv" (ngSubmit)='onSubmit()' >
+                    
+                <div class="form-group" >
+                    <label for="Objective">Objective</label>
+                    <textarea 
+                    class="form-control"
+                     placeholder="enter here" 
+                     formControlName = "Objective"
+                     name="Objective"
+                     rows="5"></textarea>                  
+                    </div>
+           
+
+            <div class="form-group" mt-2 id="we">
+                <label for="workExperience" >Work Experience</label>
+                <textarea 
+                 class="form-control weFeild"
+                  placeholder="Enter Here" 
+                  name="workExperience"
+                  formControlName = "workExperience"
+                  rows="3"></textarea>
+               <!--------new textarea--------> 
+
+                  <div class="container text-center mt-2 " id="weAddButton">
+                      <button class="btn btn-primary btn-sm" (click) = " onclickwe() ">Add</button>
+                  </div>
+            </div>
+
+            <div class="form-group" mt-2 id="aq" > 
+                <label for="academicQualification">Academic Qualification</label>
+                <textarea 
+                 class="form-control aqFeild"
+                  placeholder="enter here" 
+                  name="academicQualification"
+                  formControlName="academicQualification"
+                  rows="3"></textarea>
+ 
+                  <div class="container text-center mt-2" id="aqAddButton">
+                      <button  type="button" class="btn btn-primary btn-sm" (click) = " onclickaq() ">Add</button>
+                  </div>
+            </div>
+                </form>
+               
+            </div>
+
+            
+            <form [formGroup]="editcv" >
+                <div class="container text-center  mt-3">
+                    <button [disabled]='!editcv.valid' class="btn btn-primary btn-lg" (click)="onSubmit()"  ><a href="/resume" ></a> Generate Resume</button>
+                    <button class="btn btn-primary btn-lg ml-2" (click) = "loadApiData()">Load Saved Data</button>
+           )
+                </div>
+            </form>
+        </div>     
+      </div> 
+
+   <!-- {{CreateTemplate.value | json}} -->
+
+
+  </body>
+</html>
