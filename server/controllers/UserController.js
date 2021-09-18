@@ -3,35 +3,7 @@ const env = require('../DB')
 const jwt = require('jsonwebtoken')
 const Cv = require('../models/resume')
 
-exports.cvdata = async function(req, res){
-  //const {name, contact, address, Objective,workExperience, academicQualification} = req.body
-  //console.log(req.body);
-  // Cv.save(function (err) {
-  //   if (err) {
-  //     return res.status(422).json({
-  //       'error': 'Oops! Something went wrong'
-  //     })
-  //   }
-  //   return res.status(200).json({ 'registered': true })
-  // })
-  let _id=parseToken(req.headers.authorization)
-  const s=JSON.stringify(_id);
-  let id=JSON.parse(s).id;
-   const found=await Cv.find({userid:id}).exec();
-   console.log(found)
-   if(found.length===0){
-    let cv = new Cv({userid:id,data:req.body.data});
-    console.log("test");
-    console.log(req.headers.authorization);
-    cv.save().then(cv => {console.log(cv);});
-   }
-   else{
-     Cv.findOneAndUpdate({userid:id}, {data:req.body.data}, {new: true})
-     .then(cv => {console.log(cv)})
-     .catch(err => console.log(err));
-   }
-   res.status(200).json({'success':true});
-}
+
 
 exports.getdata=async function(req,res){
   let _id=parseToken(req.headers.authorization)

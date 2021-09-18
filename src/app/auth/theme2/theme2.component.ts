@@ -5,11 +5,11 @@ import { CvServeService } from '../cv-serve.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-resume',
-  templateUrl: './resume.component.html',
-  styleUrls: ['./resume.component.css']
+  selector: 'app-theme2',
+  templateUrl: './theme2.component.html',
+  styleUrls: ['./theme2.component.css']
 })
-export class ResumeComponent implements OnInit {
+export class Theme2Component implements OnInit {
   resumeData: any;
 
   constructor(private _resumeService: CvServeService , private _router: Router) { }
@@ -50,14 +50,5 @@ export class ResumeComponent implements OnInit {
       doc.save('Resume.pdf');
     });
   }
-t1(){
-  this._router.navigate(['/theme1'])
-}
-t2(){
-  this._router.navigate(['/theme2'])
-}
-t3(){
-  this._router.navigate(['/theme3'])
-}
 
 }

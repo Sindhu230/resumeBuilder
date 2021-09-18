@@ -1,19 +1,8 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import {
-  FormControl,
-  FormControlName,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-// import { ReactiveFormsModule } from '@angular/forms';
-// import { FormGroup, FormContol } from '@angular/forms';
-// import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+
 import { Router } from '@angular/router';
-import { forbiddenNameValidator } from '../resume-custom.validataor';
-// import { RegisterService } from '../register.service';
-import { CvServeService } from '../cv-serve.service';
+import {CvServeService} from '../cv-serve.service'
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup,FormArray, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-resume',
@@ -21,94 +10,171 @@ import { CvServeService } from '../cv-serve.service';
   styleUrls: ['./edit-resume.component.css'],
 })
 export class EditResumeComponent implements OnInit {
-  get name() {
-    return this.editcv.get('name');
-  }
-
-  // editcv: FormGroup;
-  constructor(private FB: FormBuilder, private _cvService: CvServeService) {}
-
-  onSubmit() {
-    console.log(this.editcv.value);
-    this._cvService.register(this.editcv.value).subscribe(
-      (response) => console.log('success!', response),
-      (error) => console.log('error!', error)
-    );
-  }
-
-  editcv = this.FB.group({
-    name: [
-      '',
-      [
-        Validators.required,
-        Validators.minLength(4),
-        forbiddenNameValidator(/password/),
-      ],
-    ],
-    contact: [''],
-    address: [''],
-    fb: [''],
-    github: [''],
-    linkedIn: [''],
-    Objective: [''],
-    workExperience: [''],
-    academicQualification: [''],
-  });
-
-  ngOnInit(): void {}
-
-  onclickwe() {
-    // console.log("new experinece added")
-    let newNode = document.createElement('textarea');
-    newNode.classList.add('form-control');
-    newNode.classList.add('weFeild');
-    newNode.setAttribute('placeholder', 'Enter Here');
-    newNode.setAttribute('rows', '3');
-
-    let weOb = document.getElementById('we');
-    let weAddButtonOb = document.getElementById('weAddButton');
-    weOb.insertBefore(newNode, weAddButtonOb);
-  }
-
-  onclickaq() {
-    let newNode = document.createElement('textarea');
-    newNode.classList.add('form-control');
-    newNode.classList.add('aqFeild');
-    newNode.setAttribute('placeholder', 'Enter Here');
-    newNode.setAttribute('rows', '3');
-
-    let aqOb = document.getElementById('aq');
-    let aqAddButtonOb = document.getElementById('aqAddButton');
-    aqOb.insertBefore(newNode, aqAddButtonOb);
-  }
-
-  generateCV() {
-    // console.log("generating")
-    let nameFeild = document.getElementById('nameFeild').nodeValue;
-
-    let nameT1 = document.getElementById('nameT1');
-
-    nameT1.innerHTML = nameFeild;
-  }
-
-  loadApiData() {
-    this._cvService.getdata().subscribe(
-      (cv) => {
-        console.log(cv);
-      },
-      (err) => console.log(err)
-    );
+  
+  resumeForm = new FormGroup({
     
-    // this.editcv.patchValue({
+    fullname: new FormControl('',Validators.required),
+    position: new FormControl(''),
+    email: new FormControl('',[Validators.required, Validators.email]),
+    mobile: new FormControl('',[Validators.required]),
+    address: new FormControl(''),
+    skills: new FormControl(''),
+    profile: new FormControl(''),
+    linkedin: new FormControl(''),
+    facebook: new FormControl(''),
+    instagram: new FormControl(''),
+    languages: new FormControl(''),
+    objective: new FormControl(''),
+    experience: new FormArray([new FormControl('')]),
+    project: new FormArray([new FormControl('')]),
+    certification: new FormArray([new FormControl('')]),
+    education: new FormArray([new FormControl('')]),
+  },{updateOn:"submit"});
+  submitted = false;
 
-    //   name: "sindhu",
-    //   contact :"9346171809",
-    //   address: "12/592, kotastreet, proddatur",
-    //   fb:"sindhufb",
-    //   github:"sindhuGithub",
-    //   linkedIn:"sindhuLinkedIn",
-    //   Objective:"im so and so"
+  constructor(private _resumeService: CvServeService, private _router: Router) {}
 
-    // })
+  ngOnInit(): void {
+    this._resumeService.getResumeData().subscribe(
+      (res) => {
+        const exp = JSON.parse(JSON.stringify(res)).experience;
+        console.log(exp.length);
+        for (let i = 0; i < exp.length - 1; i++) {
+          this.onAddExperience();
+        }
+
+        const pro = JSON.parse(JSON.stringify(res)).project;
+        for (let i = 0; i < pro.length - 1; i++) {
+          this.onAddProject();
+        }
+
+        const cer = JSON.parse(JSON.stringify(res)).certification;
+        for (let i = 0; i < cer.length - 1; i++) {
+          this.onAddCertifiction();
+        }
+
+        const edu = JSON.parse(JSON.stringify(res)).education;
+        for (let i = 0; i < edu.length - 1; i++) {
+          this.onAddEducation();
+        }
+
+        this.resumeForm.patchValue({
+          fullname: JSON.parse(JSON.stringify(res)).fullname,
+          position: JSON.parse(JSON.stringify(res)).position,
+          email: JSON.parse(JSON.stringify(res)).email,
+          mobile: JSON.parse(JSON.stringify(res)).mobile,
+          address: JSON.parse(JSON.stringify(res)).address,
+          skills: JSON.parse(JSON.stringify(res)).skills,
+          profile: JSON.parse(JSON.stringify(res)).profile,
+          linkedin: JSON.parse(JSON.stringify(res)).linkedin,
+          facebook: JSON.parse(JSON.stringify(res)).facebook,
+          instagram: JSON.parse(JSON.stringify(res)).instagram,
+          languages: JSON.parse(JSON.stringify(res)).languages,
+          objective: JSON.parse(JSON.stringify(res)).objective,
+          experience: JSON.parse(JSON.stringify(res)).experience,
+          project: JSON.parse(JSON.stringify(res)).project,
+          certification: JSON.parse(JSON.stringify(res)).certification,
+          education: JSON.parse(JSON.stringify(res)).education,
+        });
+      },
+      (err) => console.error(err)
+    );
   }
+
+  get experienceControls() {
+    return (<FormArray>this.resumeForm.get('experience')).controls;
+  }
+
+  get projectControls() {
+    return (<FormArray>this.resumeForm.get('project')).controls;
+  }
+
+  get certificationControls() {
+    return (<FormArray>this.resumeForm.get('certification')).controls;
+  }
+
+  get educationControls() {
+    return (<FormArray>this.resumeForm.get('education')).controls;
+  }
+
+  onAddExperience() {
+    const control = new FormControl('');
+    (<FormArray>this.resumeForm.get('experience')).push(control);
+  }
+
+  onAddProject() {
+    const control = new FormControl('');
+    (<FormArray>this.resumeForm.get('project')).push(control);
+  }
+
+  onAddCertifiction() {
+    const control = new FormControl('');
+    (<FormArray>this.resumeForm.get('certification')).push(control);
+  }
+
+  onAddEducation() {
+    const control = new FormControl('');
+    (<FormArray>this.resumeForm.get('education')).push(control);
+  }
+
+  onRemoveExperience() {
+    (<FormArray>this.resumeForm.get('experience')).removeAt(
+      this.experienceControls.length - 1
+    );
+  }
+
+  onRemoveProject() {
+    (<FormArray>this.resumeForm.get('project')).removeAt(
+      this.projectControls.length - 1
+    );
+  }
+
+  onRemoveCertification() {
+    (<FormArray>this.resumeForm.get('certification')).removeAt(
+      this.certificationControls.length - 1
+    );
+  }
+
+  onRemoveEducation() {
+    (<FormArray>this.resumeForm.get('education')).removeAt(
+      this.educationControls.length - 1
+    );
+  }
+
+  generateResume() {
+    // console.log(this.resumeForm.value);
+    this.submitted = true;
+    this._resumeService.setResumeData(this.resumeForm.value).subscribe(
+      (res) => {
+        console.log(res);
+        this._router.navigate(['/resume']);
+      },
+      (err) => console.error(err)
+    );
+  }
+
+  
+
+  //   loadApiData() {
+  //   this._resumeService.getResumeData().subscribe(
+  //     (resume) => {
+  //       console.log(resume);
+  //     },
+  //     (err) => console.log(err)
+  //   );
+    
+  //   // this.editcv.patchValue({
+
+  //   //   name: "sindhu",
+  //   //   contact :"9346171809",
+  //   //   address: "12/592, kotastreet, proddatur",
+  //   //   fb:"sindhufb",
+  //   //   github:"sindhuGithub",
+  //   //   linkedIn:"sindhuLinkedIn",
+  //   //   Objective:"im so and so"
+
+  //   // })
+  // }
+  get f() { return this.resumeForm.controls; }
+
 }

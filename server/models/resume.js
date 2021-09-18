@@ -1,14 +1,29 @@
-const mongoose = require('mongoose')
+
+
+const mongoose = require("mongoose");
+
 const Schema = mongoose.Schema;
 
+const resumeSchema = new Schema({
+    userid: String,
+    fullname: String,
+    position: String,
+    email: String,
+    mobile: String,
+    address: String,
+    skills: String,
+    linkedin: String,
+    facebook: String,
+    instagram: String,
+    languages: String,
+    objective: String,
+    experience: Array,
+    project: Array,
+    certification: Array,
+    education: Array,
+});
 
-var cvSchema = new Schema({
-
-}, {strict : false});
-var Cv = mongoose.model('cv', cvSchema)
-
-module.exports=Cv;
-//module.exports=Cv;
+module.exports = mongoose.model("resume", resumeSchema);
 
 
 

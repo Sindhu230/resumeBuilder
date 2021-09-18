@@ -1,142 +1,318 @@
 
 
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+<body>
+    <h1>Resume Builder</h1>
+    <div class="info"><a href="https://www.grandvincent-marion.fr" target="_blank"><p> creating a beautiful resume<i class="fa fa-heart">in the next 2 minutes</i> </p></a></div>
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<form [formGroup]="resumeForm" (ngSubmit)="generateResume()">
+    <h1>Should you have any questions, please do not hesitate to contact me :</h1>
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-    <title>Create Resume</title>
-  </head>
-  <body>
-   
-    
-    <div class="container">
-        <h1 class="text-center my-2">Resume Generator</h1>
-        <p class="text-center">Please Fill The Details</p>   
-        <div class="row">
-            <div class="col-md-6">
-                <h3>Personal Information</h3>
-                <form [formGroup]="editcv" (ngSubmit)='onSubmit()'>
+    <div class="contentform">
+    	<div id="sendmessage"> Your message has been sent successfully. Thank you. </div>
 
-                    <div class="form-group" mt-2>
-                        <label for="name">Your Name</label>
-                        <input [class.is-invalid] = "name.invalid && name.touched" name="name" type="text" formControlName="name" class="form-control" />
-                     <div *ngIf = "name.invalid && editcv.touched">
-                        <small *ngIf = " name.errors?.required" class="text-danger">Name is required</small>
-                         <small *ngIf =" name.errors?.minlength" class="text-danger">Name must be at least 4 characters</small>
-                         <small *ngIf =" name.errors?.forbiddenName" class="text-danger"> {{name.errors?.forbiddenName.value}} as a name is not allowed</small>
+        <div class="leftcontact">
+            <div class="form-group">
+              <p>Full Name<span>*</span></p>
+              <span class="icon-case" ><i  class="fa fa-male"></i></span>
+              <input type="text" formControlName="fullname" id="fullNameInput" class="form-control" placeholder="Enter full name" />
 
-                        </div>
-                    
-                    </div>
-                     
+              <div *ngIf="f.fullname.invalid && f.fullname.touched">
+                  <small class="text-danger" *ngIf="f.fullname.errors?.required">Please enter the name!</small>
+              </div>
+ </div> 
 
+      <div class="form-group">
+      <p>Current Position <span>*</span></p>
+      <span class="icon-case"><i class="fa fa-user"></i></span>
+      <input type="text" formControlName="position" id="positionInput" class="form-control" placeholder="Enter current position" />
 
-                      <div class="form-group" mt-2>
-                        <label for="contact">Your Contact</label>
-                        <input type="text" formControlName="contact" name="contact" class="form-control" />
-                      </div>
-                      {{editcv.value | json}}
-                      <div class="form-group" mt-2>
-                        <label for="address">Your address</label>
-                        <input type="text" formControlName="address" name="address" class="form-control"/>
-                      </div>
+      </div>
 
-                      <p class="text-secondary my-3">Important Links</p>
-                      <div class="form-group" mt-2>
-                          <label for="fb">Facebook</label>
-                          <input type="text"
-                          name="fb"
-                           class="form-control"
-                           formControlName="fb"
-                           />
-                      </div>
-                      <div class="form-group" mt-2>
-                          <label for="github">Github</label>
-                          <input type="text"
-                           class="form-control"
-                           name="github"
-                           formControlName ="github"
-                            placeholder="enter here" />
-                      </div>
-                      <div class="form-group" mt-2>
-                          <label for="linkedIn">LinkedIn</label>
-                          <input type="text"
-                           class="form-control"
-                           name="linkedIn"
-                           formControlName="linkedIn"
-                            placeholder="enter here" />
-                      </div>
-                </form>
-            </div>
-
-
-            <div class="col-md-6">
-                <h3>Professional Information</h3>
-
-                <form [formGroup]="editcv" (ngSubmit)='onSubmit()' >
-                    
-                <div class="form-group" >
-                    <label for="Objective">Objective</label>
-                    <textarea 
-                    class="form-control"
-                     placeholder="enter here" 
-                     formControlName = "Objective"
-                     name="Objective"
-                     rows="5"></textarea>                  
-                    </div>
-           
-
-            <div class="form-group" mt-2 id="we">
-                <label for="workExperience" >Work Experience</label>
-                <textarea 
-                 class="form-control weFeild"
-                  placeholder="Enter Here" 
-                  name="workExperience"
-                  formControlName = "workExperience"
-                  rows="3"></textarea>
-               <!--------new textarea--------> 
-
-                  <div class="container text-center mt-2 " id="weAddButton">
-                      <button class="btn btn-primary btn-sm" (click) = " onclickwe() ">Add</button>
-                  </div>
-            </div>
-
-            <div class="form-group" mt-2 id="aq" > 
-                <label for="academicQualification">Academic Qualification</label>
-                <textarea 
-                 class="form-control aqFeild"
-                  placeholder="enter here" 
-                  name="academicQualification"
-                  formControlName="academicQualification"
-                  rows="3"></textarea>
- 
-                  <div class="container text-center mt-2" id="aqAddButton">
-                      <button  type="button" class="btn btn-primary btn-sm" (click) = " onclickaq() ">Add</button>
-                  </div>
-            </div>
-                </form>
-               
-            </div>
-
-            
-            <form [formGroup]="editcv" >
-                <div class="container text-center  mt-3">
-                    <button [disabled]='!editcv.valid' class="btn btn-primary btn-lg" (click)="onSubmit()"  ><a href="/resume" ></a> Generate Resume</button>
-                    <button class="btn btn-primary btn-lg ml-2" (click) = "loadApiData()">Load Saved Data</button>
-           )
+      <div class="form-group">
+      <p>Mobile No<span>*</span></p>	
+      <span class="icon-case"><i class="fas fa-mobile-alt"></i></span>
+       <input type="text" formControlName="mobile" id="mobileInput" class="form-control" placeholder="Enter mobile number" />
+                <div *ngIf="f.mobile.invalid && f.mobile.touched">
+                    <small class="text-danger" *ngIf="f.mobile.errors?.required">Please enter the Mobile!</small>
                 </div>
-            </form>
-        </div>     
-      </div> 
+      </div>	
 
-   <!-- {{CreateTemplate.value | json}} -->
+      <div class="form-group">
+      <p>Email<span>*</span></p>
+      <span class="icon-case"><i class="fas fa-envelope-square"></i></span>
+      <input type="email" formControlName="email" id="emailInput" class="form-control" placeholder="Enter email" />
+      <div *ngIf="f.email.invalid && f.email.touched">
+          <small class="text-danger" *ngIf="f.email.errors?.required">Please enter the email!</small>
+      </div>
+      </div>
+
+      <div class="form-group">
+      <p>Address <span>*</span></p>
+      <span class="icon-case"><i class="fa fa-location-arrow"></i></span>
+      <textarea id="addressInput" formControlName="address" rows="3" class="form-control" placeholder="Enter address"></textarea>
+
+      </div>
+
+      <div class="form-group">
+      <p>Enter your picture url <span>*</span></p>
+      <span class="icon-case"><i class="fa fa-map-marker"></i></span>
+      <input type="url" formControlName="profile" id="profileInput" placeholder="Write your profile url" class="form-control" />
+
+      </div>	
+      <div class="form-group">
+        <p>Skills <span>*</span></p>
+        <span class="icon-case"><i class="fab fa-linkedin-in"></i></span>
+        <textarea id="skillsInput" formControlName="skills" rows="2" class="form-control" placeholder="Write your skills comma seperated"></textarea>
+  
+      </div>
+      <p>Social Links<span>*</span></p>
+      <div class="form-group">
+        <p>LinkedIn <span>*</span></p>
+        <span class="icon-case"><i class="fa fa-map-marker"></i></span>
+        <input type="text" formControlName="linkedin" id="linkedInput" class="form-control" placeholder="Enter linkedin profile url" />
+        </div>	
+        <div class="form-group">
+            <p>Facebook <span>*</span></p>
+            <span class="icon-case"><i class="fab fa-facebook"></i></span>
+            <input type="text" formControlName="facebook" id="facebookInput" class="form-control" placeholder="Enter facebook profile url" />
+            </div>	
+            <div class="form-group">
+                <p>Github<span>*</span></p>
+                <span class="icon-case"><i class="fab fa-github"></i></span>
+                <input type="text" formControlName="instagram" id="instagramInput" class="form-control" placeholder="Enter instagram profile url" />
+                </div>	
+
+</div>
+
+<div class="rightcontact">	
+
+      <div class="form-group">
+      <p>About Yourself<span>*</span></p>
+      <span class="icon-case"><i class="fas fa-male"></i></span>
+      <textarea id="objectiveInput" formControlName="objective" rows="4" class="form-control" placeholder="Write your objective"></textarea>
+
+      </div>	
+
+      <div class="form-group" formArrayName="experience">
+      <p>Experience<span>*</span></p>	
+      <span class="icon-case"><i class="fas fa-user-tie"></i></span>
+      <ng-container *ngFor="let pro of experienceControls; let i = index">
+        <textarea [formControlName]="i" rows="2" class="form-control mt-2" placeholder="Write your experience"></textarea>
+    </ng-container>
+    <div class="container text-center">
+        <img (click)="onAddExperience()" src="https://img.icons8.com/ios-glyphs/30/000000/add--v1.png"/>
+        
+<img (click)="onRemoveExperience()" src="https://img.icons8.com/ios-glyphs/25/000000/filled-trash.png"/>
+
+    </div>
+      </div>
+
+      <div class="form-group" formArrayName="project">
+      <p>Projects <span>*</span></p>
+      <span class="icon-case"><i class="fas fa-tasks"></i></span>
+      <ng-container *ngFor="let pro of projectControls; let i = index">
+        <textarea [formControlName]="i" rows="3" class="form-control mt-2" placeholder="Write your project"></textarea>
+    </ng-container>
+    <div class="container text-center">
+        <img (click)="onAddProject()" src="https://img.icons8.com/ios-glyphs/30/000000/add--v1.png"/>
+<img (click)="onRemoveProject()" src="https://img.icons8.com/ios-glyphs/25/000000/filled-trash.png"/>
+    </div>
+      </div>
+
+      <div class="form-group"  formArrayName="certification">
+      <p>Certifications <span>*</span></p>	
+      <span class="icon-case"><i class="fas fa-certificate"></i></span>
+      <ng-container *ngFor="let cer of certificationControls; let i = index">
+        <textarea [formControlName]="i" rows="2" class="form-control mt-2" placeholder="Write your certification"></textarea>
+    </ng-container>
+
+    <div class="container text-center">
+        <img (click)="onAddCertifiction()" src="https://img.icons8.com/ios-glyphs/30/000000/add--v1.png"/>
+<img (click)="onRemoveCertification()" src="https://img.icons8.com/ios-glyphs/25/000000/filled-trash.png"/>
+    </div>
+      </div>
+  
+      <div class="form-group" formArrayName="education">
+      <p>Education <span>*</span></p>
+      <span class="icon-case"><i class="fas fa-school"></i></span>
+      <ng-container *ngFor="let edu of educationControls; let i = index">
+        <textarea rows="3" [formControlName]="i" class="form-control mt-2" placeholder="Write your edcation"></textarea>
+    </ng-container>
+
+    <div class="container text-center">
+        <img (click)="onAddEducation()" src="https://img.icons8.com/ios-glyphs/30/000000/add--v1.png"/>
+<img (click)="onRemoveEducation()" src="https://img.icons8.com/ios-glyphs/25/000000/filled-trash.png"/>
+    </div>
+      </div>	
+
+</div>
+</div>
+<button type="submit" class="bouton-contact"> Generate Resume</button>
+
+</form>
+
+<style>
+    body {
+  margin: auto;
+  margin-top: -50px;
+  background: black;  
+  font-family: 'Open Sans', sans-serif;
+}
 
 
-  </body>
-</html>
+.info p {
+  text-align:center;
+  color: #999;
+  text-transform:none;
+  font-weight:600;
+  font-size:15px;
+  margin-top:2px
+}
+
+.info i {
+  color:#F6AA93;
+}
+form h1 {
+  font-size: 18px;
+  background:rgb(109, 233, 192) 0% 0%;
+  color: rgb(255, 255, 255);
+  padding: 22px 25px;
+  border-radius: 5px 5px 0px 0px;
+  margin: auto;
+  text-shadow: none; 
+  text-align:left
+}
+
+form {
+  border-radius: 5px;
+  max-width:700px;
+  width:100%;
+  margin: 5% auto;
+  background-color: whitesmoke;
+  overflow: hidden;
+}
+
+p span {
+  color: #F00;
+}
+
+p {
+  margin: 0px;
+  font-weight: 500;
+  line-height: 2;
+  color:#333;
+}
+
+h1 {
+  text-align:center; 
+  color: #666;
+  text-shadow: 1px 1px 0px #FFF;
+  margin:50px 0px 0px 0px
+}
+
+input {
+  border-radius: 0px 5px 5px 0px;
+  border: 1px solid #eee;
+  margin-bottom: 15px;
+  width: 75%;
+  height: 40px;
+  float: left;
+  padding: 0px 15px;
+}
+
+a {
+  text-decoration:inherit
+}
+
+textarea {
+  border-radius: 0px 5px 5px 0px;
+  border: 1px solid #EEE;
+  margin: 0;
+  width: 75%;
+  height: 130px; 
+  float: left;
+  padding: 0px 15px;
+}
+
+.form-group {
+  overflow: hidden;
+  clear: both;
+}
+
+.icon-case {
+  width: 35px;
+  float: left;
+  border-radius: 5px 0px 0px 5px;
+  background:#eeeeee;
+  height:42px;
+  position: relative;
+  text-align: center;
+  line-height:40px;
+}
+
+i {
+  color:#555;
+}
+
+.contentform {
+  padding: 40px 30px;
+}
+
+.bouton-contact{
+  background-color: rgb(109, 233, 192);
+  color: #FFF;
+  text-align: center;
+  width: 100%;
+  border:0;
+  padding: 17px 25px;
+  border-radius: 0px 0px 5px 5px;
+  cursor: pointer;
+  margin-top: 40px;
+  font-size: 18px;
+}
+
+.leftcontact {
+  width:49.5%; 
+  float:left;
+  border-right: 1px dotted #CCC;
+  box-sizing: border-box;
+  padding: 0px 15px 0px 0px;
+}
+
+.rightcontact {
+  width:49.5%;
+  float:right;
+  box-sizing: border-box;
+  padding: 0px 0px 0px 15px;
+}
+
+.validation {
+  display:none;
+  margin: 0 0 10px;
+  font-weight:400;
+  font-size:13px;
+  color: #DE5959;
+}
+
+#sendmessage {
+  border:1px solid #fff;
+  display:none;
+  text-align:center;
+  margin:10px 0;
+  font-weight:600;
+  margin-bottom:30px;
+  background-color: #EBF6E0;
+  color: #5F9025;
+  border: 1px solid #B3DC82;
+  padding: 13px 40px 13px 18px;
+  border-radius: 3px;
+  box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.03);
+}
+
+#sendmessage.show,.show  {
+  display:block;
+}
+</style>
+
+</body>

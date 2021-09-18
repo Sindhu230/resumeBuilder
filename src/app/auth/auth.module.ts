@@ -14,6 +14,7 @@ import { AuthGuard } from './auth.guard';
 import { UpdateComponent } from './update/update.component';
 import { ResumeComponent } from './resume/resume.component';
 import { EditResumeComponent } from './edit-resume/edit-resume.component';
+import { Theme3Component } from './theme3/theme3.component';
 
 
 const routes: Routes = [
@@ -37,6 +38,7 @@ const routes: Routes = [
     LoginComponent,
     AuthComponent,
     UpdateComponent,
+    // Theme3Component,
     // EditResumeComponent
   ],
   imports: [

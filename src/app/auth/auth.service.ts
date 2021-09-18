@@ -55,9 +55,7 @@ export class AuthService {
     }));
    
   }
-
-  
-
+ 
 
   private saveToken(token: any): any {
     this.decodedToken = jwt.decodeToken(token);

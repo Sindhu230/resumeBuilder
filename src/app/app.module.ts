@@ -14,7 +14,9 @@ import { ResumeComponent } from './auth/resume/resume.component';
 import { EditResumeComponent } from './auth/edit-resume/edit-resume.component';
 import { FormsModule} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-
+import { Theme1Component } from './auth/theme1/theme1.component';
+import { Theme2Component } from './auth/theme2/theme2.component';
+import { Theme3Component } from './auth/theme3/theme3.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,7 +24,11 @@ import { HttpClientModule } from '@angular/common/http';
     HomeComponent,
     ProfileComponent,
     ResumeComponent,
-    EditResumeComponent
+    EditResumeComponent,
+    Theme1Component,
+    Theme2Component,
+    Theme3Component
+ 
   ],
   imports: [
     BrowserModule,
